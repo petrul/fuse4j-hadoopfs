@@ -58,7 +58,7 @@ class HdfsClientReal implements HdfsClient {
         try {
             FileStatus dfsStat = dfs.getFileStatus(new Path(path));
 
-            final boolean directory = dfsStat.isDir();
+            final boolean directory = dfsStat.isDirectory();
             final int inode = 0;
             final int mode = dfsStat.getPermission().toShort();
             final int uid = userCache.getUid(dfsStat.getOwner());
@@ -113,7 +113,7 @@ class HdfsClientReal implements HdfsClient {
     }
 
     private HdfsDirEntry newHdfsDirEntry(FileStatus fileStatus) {
-        final boolean directory = fileStatus.isDir();
+        final boolean directory = fileStatus.isDirectory();
         final String name = fileStatus.getPath().getName();
         final FsPermission permission = fileStatus.getPermission();
 
@@ -256,7 +256,7 @@ class HdfsClientReal implements HdfsClient {
      */
     public boolean unlink(String filePath) {
         try {
-            return dfs.delete(new Path(filePath));
+            return dfs.delete(new Path(filePath), true);
         } catch(IOException ioe) {
             // fall through to failure
         }

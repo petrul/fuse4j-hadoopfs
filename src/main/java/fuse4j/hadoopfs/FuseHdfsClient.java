@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-@SuppressWarnings({"OctalInteger"})
+
 public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSupport, Runnable {
 
     private static final String LOCALHOST_HDFS = "hdfs://localhost:9000";
@@ -493,7 +493,7 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
         log.info("entering");
 
         try {
-            FuseMount.mount(args, new FuseHdfsClient(), log);
+            FuseMount.mount(args, new FuseHdfsClient("hdfs://localhost:8020"), log);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -589,11 +589,11 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
      */
     private void cleanupExpiredFileContexts() {
         synchronized(hdfsFileCtxtMap) {
-            Set paths = hdfsFileCtxtMap.keySet();
-            Iterator pathsIter = paths.iterator();
+            Set<String> paths = hdfsFileCtxtMap.keySet();
+            Iterator<String> pathsIter = paths.iterator();
 
             while(pathsIter.hasNext()) {
-                String path = (String) pathsIter.next();
+                String path = pathsIter.next();
 
                 // remove expired file-contexts
                 HdfsFileContext ctxt = hdfsFileCtxtMap.get(path);
