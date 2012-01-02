@@ -44,7 +44,7 @@ import java.util.Set;
 
 public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSupport, Runnable {
 
-    private static final String LOCALHOST_HDFS = "hdfs://localhost:9000";
+    private static final String LOCALHOST_HDFS = "hdfs://localhost:8020";
 
     private static final Log log = LogFactory.getLog(FuseHdfsClient.class);
 
@@ -491,9 +491,17 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
     // Java entry point
     public static void main(String[] args) {
         log.info("entering");
-
+        String hdfsurl = LOCALHOST_HDFS;
+        String[] remainingArgs = new String[0];
+        if (args.length > 0) {
+        	hdfsurl = args[0];
+        	remainingArgs = new String[args.length - 1];
+        	for (int i = 1; i < args.length; i++)
+        		remainingArgs[i - 1] = args[i];
+        }
+        	
         try {
-            FuseMount.mount(args, new FuseHdfsClient("hdfs://localhost:8020"), log);
+            FuseMount.mount(remainingArgs, new FuseHdfsClient(hdfsurl), log);
         }
         catch(Exception e) {
             e.printStackTrace();
