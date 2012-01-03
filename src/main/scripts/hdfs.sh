@@ -7,6 +7,9 @@ LD_LIBRARY_PATH="$FUSE_HOME/lib:$BINDIR:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH
 
 CP=""
+for JAR in $BINDIR/../*.jar; do
+	CP="$JAR:$CP";
+done
 for JAR in $BINDIR/../lib/*.jar; do
 	CP="$JAR:$CP";
 done
