@@ -24,9 +24,9 @@ import java.io.IOException;
  */
 class HdfsClientFactory {
 
-    public static HdfsClient create(String hdfsUrl) {
+    public static HdfsClient create(String hdfsUrl, String username) {
         try {
-            return new HdfsClientReal(new FuseUserCache(), hdfsUrl);
+            return new HdfsClientReal(new FuseUserCache(), hdfsUrl, username);
         } catch(IOException ioe) {
             ioe.printStackTrace();
             return null;

@@ -40,17 +40,19 @@ class HdfsClientReal implements HdfsClient {
     /**
      * constructor
      */
-    HdfsClientReal(UserCache userCache, String hdfsUrl) throws IOException {
+    HdfsClientReal(UserCache userCache, String hdfsUrl, String username) throws IOException {
         this.userCache = userCache;
         try {
             Configuration conf = new Configuration();
-            dfs = FileSystem.get(new URI(hdfsUrl), conf);
+            dfs = FileSystem.get(new URI(hdfsUrl), conf, username);
         } catch(URISyntaxException e) {
-            throw new IOException("URL Issue");
-        }
+            throw new IOException("URL Issue", e);
+        } catch (InterruptedException e) {
+			throw new IOException(e);
+		}
     }
 
-    /**
+	/**
      * getFileInfo()
      */
     public HdfsFileAttr getFileInfo(String path) {

@@ -66,16 +66,20 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
     }
 
     public FuseHdfsClient(String hdfsUrl) {
-        hdfs = HdfsClientFactory.create(hdfsUrl);
+    	this(hdfsUrl, System.getProperty("user.name"));
+    }
+
+    public FuseHdfsClient(String hdfsurl, String username) {
+        hdfs = HdfsClientFactory.create(hdfsurl, username);
 
         hdfsFileCtxtMap = new HashMap<String, HdfsFileContext>();
 
         ctxtMapCleanerThread = new Thread(this);
         ctxtMapCleanerThread.start();
         log.info("created");
-    }
+	}
 
-    public int getattr(String path, FuseGetattrSetter getattrSetter) throws FuseException {
+	public int getattr(String path, FuseGetattrSetter getattrSetter) throws FuseException {
         log.info("getattr(): " + path + "\n");
         HdfsFileAttr s = hdfs.getFileInfo(path);
 
@@ -491,19 +495,27 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
     // Java entry point
     public static void main(String[] args) {
         log.info("entering");
-        String hdfsurl = LOCALHOST_HDFS;
+        
         String[] remainingArgs = new String[0];
+        if (args.length < 2)
+        	throw new IllegalArgumentException("need to specify at least hdfs url and username");
+        
+        String hdfsurl = args[0];
+        String username = args[1];
+        
         if (args.length > 0) {
         	hdfsurl = args[0];
-        	remainingArgs = new String[args.length - 1];
-        	for (int i = 1; i < args.length; i++)
-        		remainingArgs[i - 1] = args[i];
+        	remainingArgs = new String[args.length - 2];
+        	for (int i = 2; i < args.length; i++)
+        		remainingArgs[i - 2] = args[i];
         }
         	
         try {
-            FuseMount.mount(remainingArgs, new FuseHdfsClient(hdfsurl), log);
-        }
-        catch(Exception e) {
+            FuseMount.mount(remainingArgs, new FuseHdfsClient(hdfsurl, username), log);
+        } catch (UnsatisfiedLinkError e) {
+        	log.warn("java.library.path is [" + System.getProperty("java.library.path") + "]");
+        	e.printStackTrace();
+        } catch(Exception e) {
             e.printStackTrace();
         }
         finally {
