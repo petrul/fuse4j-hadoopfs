@@ -494,7 +494,7 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
     //
     // Java entry point
     public static void main(String[] args) {
-        log.info("entering");
+        log.info("entering...");
         
         String[] remainingArgs = new String[0];
         if (args.length < 2)
