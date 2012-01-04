@@ -2,7 +2,6 @@ package fuse4j.hadoopfs.gui;
 
 import java.awt.AWTException;
 import java.awt.Image;
-import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -55,27 +54,35 @@ public class MounterTrayIcon {
 	        final SystemTray tray = SystemTray.getSystemTray();
 	        
 	        // Create a popup menu components
-	        MenuItem aboutItem = new MenuItem("About");
+	        
 //	        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
 //	        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
-	        Menu displayMenu = new Menu("Display");
-	        MenuItem errorItem = new MenuItem("Error");
-	        MenuItem warningItem = new MenuItem("Warning");
-	        MenuItem infoItem = new MenuItem("Info");
-	        MenuItem noneItem = new MenuItem("None");
+//	        Menu displayMenu = new Menu("Display");
+//	        MenuItem errorItem = new MenuItem("Error");
+//	        MenuItem warningItem = new MenuItem("Warning");
+//	        MenuItem infoItem = new MenuItem("Info");
+//	        MenuItem noneItem = new MenuItem("None");
+	        MenuItem aboutItem = new MenuItem("About");
 	        MenuItem exitItem = new MenuItem("Exit");
 	        
+	        MenuItem configurationItem = new MenuItem("Configuration...");
+	        MenuItem mountItem = new MenuItem("Mount");
+	        
 	        //Add components to popup menu
-	        popup.add(aboutItem);
+	        
 //	        popup.addSeparator();
 //	        popup.add(cb1);
 //	        popup.add(cb2);
 //	        popup.addSeparator();
-	        popup.add(displayMenu);
-	        displayMenu.add(errorItem);
-	        displayMenu.add(warningItem);
-	        displayMenu.add(infoItem);
-	        displayMenu.add(noneItem);
+//	        popup.add(displayMenu);
+//	        displayMenu.add(errorItem);
+//	        displayMenu.add(warningItem);
+//	        displayMenu.add(infoItem);
+//	        displayMenu.add(noneItem);
+	        
+	        popup.add(configurationItem);
+	        popup.add(mountItem);
+	        popup.add(aboutItem);
 	        popup.add(exitItem);
 	        
 	        trayIcon.setPopupMenu(popup);
@@ -127,38 +134,38 @@ public class MounterTrayIcon {
 //	            }
 //	        });
 	        
-	        ActionListener listener = new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                MenuItem item = (MenuItem)e.getSource();
-	                //TrayIcon.MessageType type = null;
-	                System.out.println(item.getLabel());
-	                if ("Error".equals(item.getLabel())) {
-	                    //type = TrayIcon.MessageType.ERROR;
-	                    trayIcon.displayMessage("Hdfs Mounter",
-	                            "This is an error message", TrayIcon.MessageType.ERROR);
-	                    
-	                } else if ("Warning".equals(item.getLabel())) {
-	                    //type = TrayIcon.MessageType.WARNING;
-	                    trayIcon.displayMessage("Sun TrayIcon Demo",
-	                            "This is a warning message", TrayIcon.MessageType.WARNING);
-	                    
-	                } else if ("Info".equals(item.getLabel())) {
-	                    //type = TrayIcon.MessageType.INFO;
-	                    trayIcon.displayMessage("Sun TrayIcon Demo",
-	                            "This is an info message", TrayIcon.MessageType.INFO);
-	                    
-	                } else if ("None".equals(item.getLabel())) {
-	                    //type = TrayIcon.MessageType.NONE;
-	                    trayIcon.displayMessage("Sun TrayIcon Demo",
-	                            "This is an ordinary message", TrayIcon.MessageType.NONE);
-	                }
-	            }
-	        };
+//	        ActionListener listener = new ActionListener() {
+//	            public void actionPerformed(ActionEvent e) {
+//	                MenuItem item = (MenuItem)e.getSource();
+//	                //TrayIcon.MessageType type = null;
+//	                System.out.println(item.getLabel());
+//	                if ("Error".equals(item.getLabel())) {
+//	                    //type = TrayIcon.MessageType.ERROR;
+//	                    trayIcon.displayMessage("Hdfs Mounter",
+//	                            "This is an error message", TrayIcon.MessageType.ERROR);
+//	                    
+//	                } else if ("Warning".equals(item.getLabel())) {
+//	                    //type = TrayIcon.MessageType.WARNING;
+//	                    trayIcon.displayMessage("Sun TrayIcon Demo",
+//	                            "This is a warning message", TrayIcon.MessageType.WARNING);
+//	                    
+//	                } else if ("Info".equals(item.getLabel())) {
+//	                    //type = TrayIcon.MessageType.INFO;
+//	                    trayIcon.displayMessage("Sun TrayIcon Demo",
+//	                            "This is an info message", TrayIcon.MessageType.INFO);
+//	                    
+//	                } else if ("None".equals(item.getLabel())) {
+//	                    //type = TrayIcon.MessageType.NONE;
+//	                    trayIcon.displayMessage("Sun TrayIcon Demo",
+//	                            "This is an ordinary message", TrayIcon.MessageType.NONE);
+//	                }
+//	            }
+//	        };
 	        
-	        errorItem.addActionListener(listener);
-	        warningItem.addActionListener(listener);
-	        infoItem.addActionListener(listener);
-	        noneItem.addActionListener(listener);
+//	        errorItem.addActionListener(listener);
+//	        warningItem.addActionListener(listener);
+//	        infoItem.addActionListener(listener);
+//	        noneItem.addActionListener(listener);
 	        
 	        exitItem.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
