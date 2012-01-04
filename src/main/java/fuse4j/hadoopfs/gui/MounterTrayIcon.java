@@ -1,7 +1,6 @@
 package fuse4j.hadoopfs.gui;
 
 import java.awt.AWTException;
-import java.awt.CheckboxMenuItem;
 import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuItem;
@@ -10,8 +9,6 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -59,8 +56,8 @@ public class MounterTrayIcon {
 	        
 	        // Create a popup menu components
 	        MenuItem aboutItem = new MenuItem("About");
-	        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
-	        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
+//	        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
+//	        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
 	        Menu displayMenu = new Menu("Display");
 	        MenuItem errorItem = new MenuItem("Error");
 	        MenuItem warningItem = new MenuItem("Warning");
@@ -108,16 +105,16 @@ public class MounterTrayIcon {
 	            }
 	        });
 	        
-	        cb1.addItemListener(new ItemListener() {
-	            public void itemStateChanged(ItemEvent e) {
-	                int cb1Id = e.getStateChange();
-	                if (cb1Id == ItemEvent.SELECTED){
-	                    trayIcon.setImageAutoSize(true);
-	                } else {
-	                    trayIcon.setImageAutoSize(false);
-	                }
-	            }
-	        });
+//	        cb1.addItemListener(new ItemListener() {
+//	            public void itemStateChanged(ItemEvent e) {
+//	                int cb1Id = e.getStateChange();
+//	                if (cb1Id == ItemEvent.SELECTED){
+//	                    trayIcon.setImageAutoSize(true);
+//	                } else {
+//	                    trayIcon.setImageAutoSize(false);
+//	                }
+//	            }
+//	        });
 	        
 //	        cb2.addItemListener(new ItemListener() {
 //	            public void itemStateChanged(ItemEvent e) {
