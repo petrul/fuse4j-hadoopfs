@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -104,6 +105,15 @@ public class MounterTrayIcon {
 	                        "This dialog box is run from System Tray");
 	            }
 	        });
+	        
+	        configurationItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new JDialog(trayIcon);
+					
+				}
+			})
 	        
 	        aboutItem.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
