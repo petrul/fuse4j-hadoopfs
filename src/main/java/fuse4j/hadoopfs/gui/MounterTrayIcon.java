@@ -110,10 +110,12 @@ public class MounterTrayIcon {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					new JDialog(trayIcon);
+					final ConfigurationDialog dialog = new ConfigurationDialog();
+					dialog.pack();
+					dialog.setVisible(true);
 					
 				}
-			})
+			});
 	        
 	        aboutItem.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
