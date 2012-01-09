@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 
+
 public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSupport, Runnable {
 
     private static final String LOCALHOST_HDFS = "hdfs://localhost:8020";
@@ -510,6 +511,10 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
         		remainingArgs[i - 2] = args[i];
         }
         	
+        doMount(hdfsurl, username, remainingArgs);
+    }
+
+    public static void doMount(String hdfsurl, String username, String[] remainingArgs) {
         try {
             FuseMount.mount(remainingArgs, new FuseHdfsClient(hdfsurl, username), log);
         } catch (UnsatisfiedLinkError e) {
@@ -522,7 +527,7 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
             log.info("exiting");
         }
     }
-
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -665,7 +670,6 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
         }
     }
 }
-
 /**
  * class HdfsFileContext
  */

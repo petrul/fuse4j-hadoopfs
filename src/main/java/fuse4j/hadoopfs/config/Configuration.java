@@ -9,11 +9,13 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.management.RuntimeErrorException;
-
 import org.apache.log4j.Logger;
 
 public class Configuration extends Properties {
+	
+	private static final String FUSE4J_HDFS_USER_NAME = "fuse4j.hdfs.user.name";
+	public static final String FUSE4J_HDFS_MOUNT_POINT = "fuse4j.hdfs.mount.point";
+	public static final String FUSE4J_HDFS_HDFS_URL = "fuse4j.hdfs.hdfs.url";
 	
 	private static final long serialVersionUID = 1L;
 
@@ -22,6 +24,7 @@ public class Configuration extends Properties {
 		while (keys.hasMoreElements()) {
 			String key = (String)keys.nextElement();
 			String value = (String) props.get(key);
+			value = value.replace("$HOME", getUserHome());
 			this.put(key, value);
 		}
 	}
@@ -42,12 +45,17 @@ public class Configuration extends Properties {
 	}
 	
 	public static File getDefaultUserConfigurationPath() {
-		String userhome = System.getProperty("user.home");
+		String userhome = getUserHome();
 		File confdir = new File(userhome, ".fuse4j-hdfs");
 		File propfile = new File(confdir, "fuse4j-hdfs.properties");
 		return propfile;
 	}
 	
+	private static String getUserHome() {
+		String userhome = System.getProperty("user.home");;
+		return userhome;
+	}
+
 	public static Configuration load(File path) throws IOException {
 		Properties props = new Properties();
 		props.load(new FileInputStream(path));
@@ -91,5 +99,28 @@ public class Configuration extends Properties {
 		LOG.info(String.format("saved properties to [%s]", where.getAbsoluteFile()));
 	}
 	
-	static Logger LOG = Logger.getLogger(Configuration.class); 
+	static Logger LOG = Logger.getLogger(Configuration.class);
+
+	public String getHdfsUrl() {
+		return this.getProperty(FUSE4J_HDFS_HDFS_URL);
+	}
+	
+	public void setHdfsUrl(String url) {
+		this.setProperty(FUSE4J_HDFS_HDFS_URL, url);
+	}
+
+	public String getMountPoint() {
+		return this.getProperty(FUSE4J_HDFS_MOUNT_POINT);
+	}
+	
+	public void setMountPoint(String s) {
+		this.setProperty(FUSE4J_HDFS_MOUNT_POINT, s);
+	}
+	
+	public String getUsername() {
+		return this.getProperty(FUSE4J_HDFS_USER_NAME);
+	}
+	public void setUsername(String s) {
+		this.setProperty(FUSE4J_HDFS_USER_NAME, s);
+	}
 }

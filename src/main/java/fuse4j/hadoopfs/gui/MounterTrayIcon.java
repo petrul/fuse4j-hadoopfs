@@ -8,15 +8,21 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.SwingWorker;
+
+import fuse4j.hadoopfs.FuseHdfsClient;
+import fuse4j.hadoopfs.config.Configuration;
 
 public class MounterTrayIcon {
+	State state = State.UNMOUNTED;
+	
 	   public static void main(String[] args) {
 	        /* Use an appropriate Look and Feel */
 //	        try {
@@ -56,13 +62,6 @@ public class MounterTrayIcon {
 	        
 	        // Create a popup menu components
 	        
-//	        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
-//	        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
-//	        Menu displayMenu = new Menu("Display");
-//	        MenuItem errorItem = new MenuItem("Error");
-//	        MenuItem warningItem = new MenuItem("Warning");
-//	        MenuItem infoItem = new MenuItem("Info");
-//	        MenuItem noneItem = new MenuItem("None");
 	        MenuItem aboutItem = new MenuItem("About");
 	        MenuItem exitItem = new MenuItem("Exit");
 	        
@@ -70,16 +69,6 @@ public class MounterTrayIcon {
 	        MenuItem mountItem = new MenuItem("Mount");
 	        
 	        //Add components to popup menu
-	        
-//	        popup.addSeparator();
-//	        popup.add(cb1);
-//	        popup.add(cb2);
-//	        popup.addSeparator();
-//	        popup.add(displayMenu);
-//	        displayMenu.add(errorItem);
-//	        displayMenu.add(warningItem);
-//	        displayMenu.add(infoItem);
-//	        displayMenu.add(noneItem);
 	        
 	        popup.add(configurationItem);
 	        popup.add(mountItem);
@@ -111,6 +100,7 @@ public class MounterTrayIcon {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					final ConfigurationDialog dialog = new ConfigurationDialog();
+					
 					dialog.pack();
 					dialog.setVisible(true);
 					
@@ -123,28 +113,39 @@ public class MounterTrayIcon {
 	                        "This dialog box is run from the About menu item");
 	            }
 	        });
-	        
-//	        cb1.addItemListener(new ItemListener() {
-//	            public void itemStateChanged(ItemEvent e) {
-//	                int cb1Id = e.getStateChange();
-//	                if (cb1Id == ItemEvent.SELECTED){
-//	                    trayIcon.setImageAutoSize(true);
-//	                } else {
-//	                    trayIcon.setImageAutoSize(false);
-//	                }
-//	            }
-//	        });
-	        
-//	        cb2.addItemListener(new ItemListener() {
-//	            public void itemStateChanged(ItemEvent e) {
-//	                int cb2Id = e.getStateChange();
-//	                if (cb2Id == ItemEvent.SELECTED){
-//	                    trayIcon.setToolTip("Sun TrayIcon");
-//	                } else {
-//	                    trayIcon.setToolTip(null);
-//	                }
-//	            }
-//	        });
+
+	        mountItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                    	final Configuration conf = Configuration.loadOrCreateDefaults();
+                    	makeSureDirectoryExists(conf.getMountPoint());
+                    	SwingWorker<?, ?> worker = new SwingWorker() {
+
+							@Override
+							protected Object doInBackground() throws Exception {
+								FuseHdfsClient.doMount(conf.getHdfsUrl(), conf.getUsername(), 
+										new String[] {conf.getMountPoint(), "-f"});
+								return null;
+							}
+                    		
+                    	};
+                    	worker.execute();
+                        
+                    }
+
+					private void makeSureDirectoryExists(String mountPoint) {
+						File dir = new File(mountPoint);
+						if (!dir.exists()) 
+							dir.mkdirs();
+						else {
+							if (dir.isFile())
+								throw new IllegalArgumentException(String.format("mount point [%s] is a regular file, should point to a folder", mountPoint));
+							if (dir.exists() && dir.list().length > 0)
+								throw new IllegalArgumentException(String.format("mount point [%s] is a non-empty folder, should point to an empty folder", mountPoint));
+							
+						}
+					}
+                });
 	        
 //	        ActionListener listener = new ActionListener() {
 //	            public void actionPerformed(ActionEvent e) {
