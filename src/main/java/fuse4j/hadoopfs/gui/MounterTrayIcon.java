@@ -119,7 +119,7 @@ public class MounterTrayIcon {
                     public void actionPerformed(ActionEvent e) {
                     	final Configuration conf = Configuration.loadOrCreateDefaults();
                     	makeSureDirectoryExists(conf.getMountPoint());
-                    	SwingWorker<?, ?> worker = new SwingWorker() {
+                    	SwingWorker<?, ?> worker = new SwingWorker<Object, Object>() {
 
 							@Override
 							protected Object doInBackground() throws Exception {

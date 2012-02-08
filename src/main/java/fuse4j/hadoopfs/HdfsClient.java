@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
  * interface HdfsClient
  */
 public interface HdfsClient {
+	
     public HdfsFileAttr getFileInfo(String path);
 
     public HdfsDirEntry[] listPaths(String path);
