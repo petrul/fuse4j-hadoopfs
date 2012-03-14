@@ -1,15 +1,12 @@
 package fuse4j.hadoopfs.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.apache.log4j.Logger;
+
+import java.io.*;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 
 public class Configuration extends Properties {
 	

@@ -104,7 +104,7 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
             size, blocks,
             s.accessTime, s.modifiedTime, s.createTime
         );
-
+        log.info(String.format("dbg: mode = %o", s.getMode()));
         return 0;
 
     }
@@ -401,8 +401,7 @@ public class FuseHdfsClient implements Filesystem3, XattrSupport, LifecycleSuppo
      * write()
      */
     public int write(String path, Object fh, boolean isWritepage, ByteBuffer buf, long offset) throws FuseException {
-        log.info("write(): " + path + " offset: " + offset + " len: "
-            + buf.capacity() + "\n");
+        log.info("write(): " + path + " offset: " + offset + " len: " + buf.capacity() + "\n");
 
         HdfsFileContext ctxt = pinFileContext(path);
 
