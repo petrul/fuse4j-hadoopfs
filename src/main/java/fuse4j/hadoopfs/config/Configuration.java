@@ -30,7 +30,7 @@ public class Configuration extends Properties {
 	 * properties that come with the distribution, in the jar
 	 */
 	public static Configuration getFactoryDefaults() {
-		InputStream resourceAsStream = Configuration.class.getClassLoader().getResourceAsStream("fuse4j-hdfs.properties");
+		InputStream resourceAsStream = Configuration.class.getClassLoader().getResourceAsStream("bigdisk-defaults.properties");
 		Properties props = new Properties();
 		try {
 			props.load(resourceAsStream);
@@ -44,7 +44,7 @@ public class Configuration extends Properties {
 	public static File getDefaultUserConfigurationPath() {
 		String userhome = getUserHome();
 		File confdir = new File(userhome, ".fuse4j-hdfs");
-		File propfile = new File(confdir, "fuse4j-hdfs.properties");
+		File propfile = new File(confdir, "bigdisk-defaults.properties");
 		return propfile;
 	}
 	
